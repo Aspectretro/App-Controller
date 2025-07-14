@@ -1,4 +1,6 @@
 ## Note:
+### Source:
+[https://www.pythontutorial.net/tkinter/] - tkinter tutorial from Python Tutorial
 ### General:
 - ttk is the themed version of tk
 - both version have same attributes, but ttk's output are a lot more modernised compared to tk
