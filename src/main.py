@@ -9,9 +9,11 @@ window.geometry('600x400+50+50')
 
 
 def re_press(event):
-    print(event)
+    print('event')
 
 btn = ttk.Button(window, text="Save")
-btn.bind('<RETURN>', re_press)
+btn.bind('<Return>', re_press)
+
+btn.pack(expand=True)
 
 window.mainloop()

@@ -1,18 +1,23 @@
 import tkinter as tk
 from tkinter import ttk
 
-
-def return_pressed(event):
-    print('Return key pressed.')
-
-
+# main window
 root = tk.Tk()
+root.geometry('300x200')
+root.resizable(False, False)
+root.title('Button Demo')
 
-btn = ttk.Button(root, text='Save')
-btn.bind('<Return>', return_pressed)
+# exit button
+exit_button = ttk.Button(
+    root,
+    text='Exit',
+    command=lambda: root.quit()
+)
 
-
-btn.focus()
-btn.pack(expand=True)
+exit_button.pack(
+    ipadx=5,
+    ipady=5,
+    expand=True
+)
 
 root.mainloop()
