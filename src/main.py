@@ -1,6 +1,5 @@
 import tkinter as tk
 from tkinter import ttk
-import os
 from PIL import Image, ImageTk
 from control import ctrl
 
@@ -18,9 +17,11 @@ Extension:
 """
 
 class App(tk.Tk): # Window configuration
-    def click(self): # TODO: link button clicked to applications
+    def click(self, button): # TODO: link button clicked to applications
         command = ctrl()
-        command.press()
+        command.setName(button)
+        name = command.getName()
+        command.press(name)
 
     def __init__(self):
         super().__init__()
@@ -50,7 +51,7 @@ class App(tk.Tk): # Window configuration
         # Word
         self.word = ttk.Button(self, 
                                image=self.word_icon, 
-                               command=self.click
+                               command=lambda: self.click("word")
                               )
         self.word.grid(
             column=0,
@@ -62,7 +63,7 @@ class App(tk.Tk): # Window configuration
         # Chrome
         self.chrome = ttk.Button(self,
                                  image = self.chrome_icon,
-                                 command = self.click)
+                                 command=lambda: self.click("chrome"))
         self.chrome.grid(
             column=1,
             row=1,
@@ -73,7 +74,7 @@ class App(tk.Tk): # Window configuration
         # Music
         self.music = ttk.Button(self,
                                 image = self.music_icon,
-                                command = self.click)
+                                command=lambda: self.click("music"))
         self.music.grid(
             column=2,
             row=1,
