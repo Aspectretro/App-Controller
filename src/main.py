@@ -4,7 +4,7 @@ from PIL import Image, ImageTk
 from control import ctrl
 
 """
-Planning:
+TODO:
 - Bg Colour: white
 - App: word, music app, chrome
 - Launch on startup
@@ -13,7 +13,6 @@ Planning:
 
 Extension:
 - Custom apps
-- Custom bg
 """
 
 class App(tk.Tk): # Window configuration
