@@ -1,23 +1,15 @@
-import tkinter as tk
-from tkinter import ttk
+import winreg
 
-# main window
-root = tk.Tk()
-root.geometry('300x200')
-root.resizable(False, False)
-root.title('Button Demo')
+def get_default_browser_windows():
+    try:
+        with winreg.OpenKey(winreg.HKEY_CURRENT_USER, 
+                           r"Software\Microsoft\Windows\Shell\Associations\UrlAssociations\http\UserChoice") as key:
+            browser = winreg.QueryValueEx(key, 'ProgId')[0]
+            return browser
+    except Exception as e:
+        print(f"Error accessing registry: {e}")
+        return None
 
-# exit button
-exit_button = ttk.Button(
-    root,
-    text='Exit',
-    command=lambda: root.quit()
-)
-
-exit_button.pack(
-    ipadx=5,
-    ipady=5,
-    expand=True
-)
-
-root.mainloop()
+# Example usage
+browser = get_default_browser_windows()
+print(f"Default browser (Windows): {browser}")

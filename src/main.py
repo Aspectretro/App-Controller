@@ -20,7 +20,7 @@ class App(tk.Tk): # Window configuration
         command = ctrl()
         command.setName(button)
         name = command.getName()
-        command.press(name)
+        command.press(name) # TODO: default browser
 
     def __init__(self):
         super().__init__()
@@ -82,7 +82,7 @@ class App(tk.Tk): # Window configuration
         )
 
         # FIXME: Temp exit button for testing
-        self.exit = ttk.Button(self, text="exit", command=lambda: self.quit()).grid(column=0, row= 4)
+        self.exit = ttk.Button(self, text="Exit (This is for test purposes)", command=lambda: self.quit()).grid(column=0, row= 4)
 
 if __name__ == "__main__":
     app = App()
