@@ -2,11 +2,12 @@ import tkinter as tk
 from tkinter import ttk
 import os
 from PIL import Image, ImageTk
+from control import ctrl
 
 """
 Planning:
-- Bg Colour:
-- App:
+- Bg Colour: white
+- App: word, music app, chrome
 - Launch on startup
 - Hide in system tray
 - System message notifying startup
@@ -17,8 +18,9 @@ Extension:
 """
 
 class App(tk.Tk): # Window configuration
-    def click(self):
-        print("Clicked")
+    def click(self): # TODO: link button clicked to applications
+        command = ctrl()
+        command.press()
 
     def __init__(self):
         super().__init__()
@@ -26,9 +28,10 @@ class App(tk.Tk): # Window configuration
         self.title("App Controller")
         self.geometry("500x400")
 
+
         # Heading
         self.label = ttk.Label(self, text="Main Control", font=("Times New Roman", 13))       
-        self.label.pack()
+        self.label.grid(row=0, column=5)
 
         # Image
         originalWord = Image.open("./assets/Word.png")
@@ -47,29 +50,39 @@ class App(tk.Tk): # Window configuration
         # Word
         self.word = ttk.Button(self, 
                                image=self.word_icon, 
-                               command=self.click)
-        self.word.pack(
-            ipadx=5,
-            ipady=5,
+                               command=self.click
+                              )
+        self.word.grid(
+            column=0,
+            row=1,
+            padx=5,
+            pady=5
         )
 
         # Chrome
         self.chrome = ttk.Button(self,
                                  image = self.chrome_icon,
                                  command = self.click)
-        self.chrome.pack(
-            ipadx=5,
-            ipady=5
+        self.chrome.grid(
+            column=1,
+            row=1,
+            padx=5,
+            pady=5
         )
         
         # Music
         self.music = ttk.Button(self,
                                 image = self.music_icon,
                                 command = self.click)
-        self.music.pack(
-            ipadx=5,
-            ipady=5
+        self.music.grid(
+            column=2,
+            row=1,
+            padx=5,
+            pady=5
         )
+
+        # FIXME: Temp exit button for testing
+        self.exit = ttk.Button(self, text="exit", command=lambda: self.quit()).grid(column=0, row= 4)
 
 if __name__ == "__main__":
     app = App()
