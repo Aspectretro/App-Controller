@@ -25,25 +25,28 @@ class App(tk.Tk): # Window configuration
 
 
         # Heading
-        self.label = ttk.Label(self, text="Main Control", font=("Times New Roman", 13))       
-        self.label.grid(row=0, column=5)
+        self.label = ttk.Label(self, text="Main Control", font=("Times New Roman", 13), anchor="center")       
+        self.label.grid(row=0, column=3, sticky="nsew")
 
         # Image
         originalWord = Image.open("./assets/Word.png")
         originalChrome = Image.open("./assets/Chrome.png")
         originalMusic = Image.open("./assets/Music.png")
         originalFile = Image.open("./assets/File.png") 
+        originalSetting = Image.open("./assets/Settings.png")
 
         resizeWord = originalWord.resize((50,50), Image.LANCZOS)
         resizeChrome = originalChrome.resize((50,50), Image.LANCZOS)
         resizeMusic = originalMusic.resize((50,50), Image.LANCZOS)
         resizeFile = originalFile.resize((50,50), Image.LANCZOS)
+        resizeSetting = originalSetting.resize((50,50), Image.LANCZOS)
 
         # Icon
         self.word_icon = ImageTk.PhotoImage(resizeWord)
         self.chrome_icon = ImageTk.PhotoImage(resizeChrome)
         self.music_icon = ImageTk.PhotoImage(resizeMusic)
         self.file_icon = ImageTk.PhotoImage(resizeFile)
+        self.setting_icon = ImageTk.PhotoImage(resizeSetting)
 
         # Word
         self.word = ttk.Button(self, 
@@ -94,6 +97,18 @@ class App(tk.Tk): # Window configuration
             pady=5
         )
 
+        # Setting
+        self.settings = ttk.Button(self, 
+                                   image = self.setting_icon, 
+                                   command=lambda: self.click("settings")
+                                   )
+        self.settings.grid(
+            column=4,
+            row=1,
+            padx=5,
+            pady=5
+        )
+
         # FIXME: Temp exit button for testing
         self.exit = ttk.Button(self, text="Exit", command=lambda: self.quit()).grid(column=0, row= 4)
 
@@ -102,7 +117,7 @@ class App(tk.Tk): # Window configuration
         self.command.press(browser_name)
     
     def click(self, name):
-        self.command.open(name.lower())
+        self.command.press(name.lower())
 
 
 if __name__ == "__main__":
