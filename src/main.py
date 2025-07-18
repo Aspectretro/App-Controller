@@ -32,17 +32,18 @@ class App(tk.Tk): # Window configuration
         originalWord = Image.open("./assets/Word.png")
         originalChrome = Image.open("./assets/Chrome.png")
         originalMusic = Image.open("./assets/Music.png")
-        originalFile = Image.open("./assets/File.png") # TODO: Add file explorer icon
+        originalFile = Image.open("./assets/File.png") 
 
         resizeWord = originalWord.resize((50,50), Image.LANCZOS)
         resizeChrome = originalChrome.resize((50,50), Image.LANCZOS)
         resizeMusic = originalMusic.resize((50,50), Image.LANCZOS)
-        resizeFile = originalWord.resize((50,50), Image.LANCZOS) # TODO: Add file explorer icon
+        resizeFile = originalFile.resize((50,50), Image.LANCZOS)
 
         # Icon
         self.word_icon = ImageTk.PhotoImage(resizeWord)
         self.chrome_icon = ImageTk.PhotoImage(resizeChrome)
         self.music_icon = ImageTk.PhotoImage(resizeMusic)
+        self.file_icon = ImageTk.PhotoImage(resizeFile)
 
         # Word
         self.word = ttk.Button(self, 
@@ -75,6 +76,19 @@ class App(tk.Tk): # Window configuration
                                 )
         self.music.grid(
             column=2,
+            row=1,
+            padx=5,
+            pady=5
+        )
+
+        # File Explorer
+        self.file = ttk.Button(self,
+                               image = self.file_icon,
+                               command = lambda: self.click("file explorer")
+                               )
+        
+        self.file.grid(
+            column=3,
             row=1,
             padx=5,
             pady=5
