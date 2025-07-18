@@ -57,7 +57,7 @@ class App(tk.Tk): # Window configuration
         # Chrome
         self.chrome = ttk.Button(self,
                                  image = self.chrome_icon,
-                                 command = self.browser()
+                                 command = self.browser
                                  )
         self.chrome.grid(
             column=1,
@@ -82,15 +82,11 @@ class App(tk.Tk): # Window configuration
         self.exit = ttk.Button(self, text="Exit", command=lambda: self.quit()).grid(column=0, row= 4)
 
     def browser(self): # This is for browser ONLY
-        command = ctrl()
-        name = command.get_default_browser_windows()
-        command.press(name) # TODO: default browser
+        browser_name = self.command.get_default_browser_windows()
+        self.command.press(browser_name)
     
     def click(self, name):
-        command = ctrl()
-        command.setName(name)
-        app_name = command.getName()
-        command.press(app_name)
+        self.command.open(name.lower())
 
 
 if __name__ == "__main__":
