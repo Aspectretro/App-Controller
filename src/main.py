@@ -32,10 +32,12 @@ class App(tk.Tk): # Window configuration
         originalWord = Image.open("./assets/Word.png")
         originalChrome = Image.open("./assets/Chrome.png")
         originalMusic = Image.open("./assets/Music.png")
+        originalFile = Image.open("./assets/File.png") # TODO: Add file explorer icon
 
         resizeWord = originalWord.resize((50,50), Image.LANCZOS)
         resizeChrome = originalChrome.resize((50,50), Image.LANCZOS)
         resizeMusic = originalMusic.resize((50,50), Image.LANCZOS)
+        resizeFile = originalWord.resize((50,50), Image.LANCZOS) # TODO: Add file explorer icon
 
         # Icon
         self.word_icon = ImageTk.PhotoImage(resizeWord)
