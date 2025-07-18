@@ -16,14 +16,9 @@ Extension:
 """
 
 class App(tk.Tk): # Window configuration
-    def click(self, button): # TODO: link button clicked to applications
-        command = ctrl()
-        command.setName(button)
-        name = command.getName()
-        command.press(name) # TODO: default browser
-
     def __init__(self):
         super().__init__()
+        self.command = ctrl()
 
         self.title("App Controller")
         self.geometry("500x400")
@@ -50,7 +45,7 @@ class App(tk.Tk): # Window configuration
         # Word
         self.word = ttk.Button(self, 
                                image=self.word_icon, 
-                               command=lambda: self.click("word")
+                               command = lambda: self.click("word")
                               )
         self.word.grid(
             column=0,
@@ -62,7 +57,8 @@ class App(tk.Tk): # Window configuration
         # Chrome
         self.chrome = ttk.Button(self,
                                  image = self.chrome_icon,
-                                 command=lambda: self.click("chrome"))
+                                 command = self.browser()
+                                 )
         self.chrome.grid(
             column=1,
             row=1,
@@ -73,7 +69,8 @@ class App(tk.Tk): # Window configuration
         # Music
         self.music = ttk.Button(self,
                                 image = self.music_icon,
-                                command=lambda: self.click("music"))
+                                command = lambda: self.click("music")
+                                )
         self.music.grid(
             column=2,
             row=1,
@@ -82,7 +79,19 @@ class App(tk.Tk): # Window configuration
         )
 
         # FIXME: Temp exit button for testing
-        self.exit = ttk.Button(self, text="Exit (This is for test purposes)", command=lambda: self.quit()).grid(column=0, row= 4)
+        self.exit = ttk.Button(self, text="Exit", command=lambda: self.quit()).grid(column=0, row= 4)
+
+    def browser(self): # This is for browser ONLY
+        command = ctrl()
+        name = command.get_default_browser_windows()
+        command.press(name) # TODO: default browser
+    
+    def click(self, name):
+        command = ctrl()
+        command.setName(name)
+        app_name = command.getName()
+        command.press(app_name)
+
 
 if __name__ == "__main__":
     app = App()
