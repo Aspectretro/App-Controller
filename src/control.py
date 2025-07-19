@@ -1,36 +1,26 @@
 from AppOpener import open
-import os
+import webbrowser
 import winreg
-
-"""
-Overall control of the communication between the buttons to the applications
-"""
 
 class ctrl():
     def __init__(self):
-        super().__init__()
+        self.name = None
+        self.browser_id = {
+            "ChromeHTML": "google chrome",
+            "MSEdgeHTM": "microsoft edge",
+            "FirefoxURL": "firefox",
+            "OperaStable": "opera gx browser",
+        }
     
     def get_default_browser_windows(self) -> str:
         try:
             with winreg.OpenKey(winreg.HKEY_CURRENT_USER, 
                             r"Software\Microsoft\Windows\Shell\Associations\UrlAssociations\http\UserChoice") as key:
                 browser = winreg.QueryValueEx(key, 'ProgId')[0]
-                return self.browser_map(browser) 
-        except Exception as e:
-            print(f"Error accessing registry: {e}")
+                return self.browser_map.get(browser) 
+        except Exception:
             return None
-    def browser_map(self, prog_id):
-        """
-        Since google chrome is being used world wide as the number one default browser with a 64%
-        global usage, the default assumption of browser setting will be chrome.
-        """
-        browser_id = {
-            "ChromeHTML": "google chrome",
-            "MSEdgeHTM": "microsoft edge",
-            "FirefoxURL": "firefox",
-            "OperaStable": "opera",
-        }
-        return browser_id.get(prog_id, "chrome")
+
 
     def setName(self, name):
         self.name = name
@@ -39,12 +29,15 @@ class ctrl():
         return self.name
 
     def press(self, name): # TODO: obtain information from os to find default browser
-        app_name = name.lower() if name else self.getName().lower()
+        if not name:
+            return False
         try:
-            if app_name == self.get_default_browser_windows().lower():
-                open(self.get_default_browser_windows())
+            if name.lower() in ["google chrome", "microsoft edge", "firefox", "opera gx browser"]:
+                default_brower = self.get_default_browser_windows()
+                open(default_brower)
             else:
-                open(app_name)
+                open(name.lower())
         except Exception as e:
-            print(f"Error opening application '{app_name}': {e}")
-            
+            print(f"Error opening application '{name}': {e}")
+            if "browser" in name.lower():
+                webbrowser.open("about: blank")
