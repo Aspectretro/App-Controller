@@ -28,6 +28,7 @@ class App(tk.Tk): # Window configuration
                 print(f"failed to load {app} icon")
 
         # Buttons
+        # TODO: open web applications, more applications
         buttons = [
             ("word", 0, lambda: self.click("word")),
             ("chrome", 1, lambda: self.click("google chrome")),
