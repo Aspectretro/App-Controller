@@ -16,10 +16,6 @@ class App(tk.Tk): # Window configuration
             self.grid_columnconfigure(i, weight=1)
         self.grid_rowconfigure(i, weight=1)
 
-        # Heading
-        self.label = ttk.Label(self, text="Main Control", font=("Times New Roman", 13))       
-        self.label.grid(row=0, column=3, sticky="nsew")
-
         # Image
         self.icons = {}
         apps = ["Word", "Chrome", "File", "Music", "Settings"]
@@ -37,7 +33,8 @@ class App(tk.Tk): # Window configuration
             ("chrome", 1, lambda: self.click("google chrome")),
             ("music", 2, lambda: self.click("qq music")),
             ("file", 3, lambda: self.click("file explorer")),
-            ("settings", 4, lambda: self.click("settings"))
+            ("settings", 4, lambda: self.click("settings")),
+            ("", 5, lambda: self.click(""))
         ]
         for name, col, cmd in buttons:
             icon = self.icons.get(name)
