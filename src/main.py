@@ -3,7 +3,6 @@ from tkinter import ttk, messagebox
 from PIL import Image, ImageTk
 from control import ctrl
 
-
 class App(tk.Tk): # Window configuration
     def __init__(self):
         super().__init__()
@@ -11,10 +10,9 @@ class App(tk.Tk): # Window configuration
         self.title("App Controller")
         self.geometry("500x400")
 
-        # Grid confgiure
-        for i in range(5): # 5 icon per row
-            self.grid_columnconfigure(i, weight=1)
-        self.grid_rowconfigure(i, weight=1)
+        # Frame
+        self.set_frame = ttk.Frame(self)
+        self.set_frame.pack(expand=True, fill="both", padx=5, pady=5)
 
         # Image
         self.icons = {}
@@ -30,25 +28,57 @@ class App(tk.Tk): # Window configuration
         # Buttons
         # TODO: open web applications, more applications
         buttons = [
-            ("word", 0, lambda: self.click("word")),
-            ("chrome", 1, lambda: self.click("google chrome")),
-            ("music", 2, lambda: self.click("qq music")),
-            ("file", 3, lambda: self.click("file explorer")),
-            ("settings", 4, lambda: self.click("settings")),
-            ("lightroom", 5, lambda: self.click("adobe lightroom")),
-            ("logseq", 6, lambda: self.click("logseq")),
-            ("", 7, lambda: self.click(""))
+            ("word", lambda: self.click("word")),
+            ("chrome", lambda: self.click("google chrome")),
+            ("music", lambda: self.click("qq music")),
+            ("file", lambda: self.click("file explorer")),
+            ("settings", lambda: self.click("settings")),
+            ("lightroom", lambda: self.click("adobe lightroom")),
+            ("logseq", lambda: self.click("logseq")),
         ]
-        for name, col, cmd in buttons:
+
+        # Find dimension
+        cols_row = 5
+        total_button = len(buttons)
+        rows = (total_button + cols_row - 1) // cols_row
+
+        for r in range(rows):
+            self.set_frame.grid_rowconfigure(r, weight=1)
+        for c in range(cols_row):
+            self.set_frame.grid_columnconfigure(c, weight=1)
+        
+        # Placing buttons
+        for index, (name, cmd) in enumerate(buttons):
+            rows = index // cols_row
+            col = index % cols_row
+
             icon = self.icons.get(name)
-            btn = ttk.Button(self, image=icon, command=cmd)
+            btn = ttk.Button(
+                self.frame,
+                image=icon,
+                command=cmd
+            )
+        
             if not icon:
                 btn.config(text=name.capitalize())
-            btn.grid(column=col, row=1, padx= 5, pady=5, sticky="nsew")
+
+            btn.grid(
+                row=rows,
+                column=col,
+                padx=5,
+                pady=5,
+                sticky="nesw"
+            )
         
 
         # FIXME: Temp exit button for testing
-        self.exit = ttk.Button(self, text="Exit", command=lambda: self.quit()).grid(column=0, row= 4)
+        exitBtn = ttk.Frame(self)
+        exitBtn.pack(fill='x', padx=10, pady=10)
+        ttk.Button(
+            exitBtn,
+            text="Exit",
+            command=self.quit
+        ).pack(side="right")
     
     def click(self, name):
         try:
