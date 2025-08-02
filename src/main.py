@@ -1,6 +1,11 @@
 import tkinter as tk
 from tkinter import ttk, messagebox
 from PIL import Image, ImageTk
+from control import ctrl  # Assuming this contains your application control logic
+
+import tkinter as tk
+from tkinter import ttk, messagebox
+from PIL import Image, ImageTk
 from control import ctrl
 
 class App(tk.Tk):
@@ -8,127 +13,100 @@ class App(tk.Tk):
         super().__init__()
         self.command = ctrl()
         
-        # Load icons FIRST with default size
-        self.icons = {}
-        self.app_names = ["Word", "Chrome", "File", "Music", 
-                         "Settings", "Lightroom", "Logseq"]
-        self.load(80)  # Initial load before UI
+        # Fixed button and window configuration
+        self.button_size = 100  # pixels  # window padding
+        self.padding = 1
+        self.buttons_per_row = 4
         
-        # Window configuration
+        # Calculate optimal window size
+        num_buttons = len(["Word", "Chrome", "File", "Music", 
+                          "Settings", "Lightroom", "Logseq"])
+        rows = (num_buttons + self.buttons_per_row - 1) // self.buttons_per_row
+        
+        window_width = (self.button_size * self.buttons_per_row + 80)  # +20 for scrollbar space
+        window_height = (self.button_size * rows + 60)  # +60 for title bar and exit button
+        
+        # Window setup
         self.title("App Controller")
-        self.geometry("600x600")
-        self.minsize(400, 400)
+        self.geometry(f"{window_width}x{window_height}")
+        self.minsize(window_width, window_height)  # Prevent making window too small
         
-        # Main container
-        self.main_frame = tk.Frame(self, bg='#f0f0f0')
-        self.main_frame.pack(expand=True, fill='both', padx=20, pady=20)
+        # Main container with canvas and scrollbar
+        self.canvas = tk.Canvas(self)
+        self.scrollbar = ttk.Scrollbar(self, orient="vertical", command=self.canvas.yview)
+        self.scrollable_frame = ttk.Frame(self.canvas)
         
-        # Initial UI setup
-        self.setup_ui()
-        
-        # Exit button
-        exit_frame = tk.Frame(self)
-        exit_frame.pack(fill='x', padx=20, pady=(0, 20))
-        ttk.Button(exit_frame, text="Exit", command=self.quit).pack(side='right')
-        
-        self.bind("<Configure>", self.on_window_resize)
-        self.after(100, self.force_layout_pass)
-
-    # load on startup
-    def load(self, size):
-        """Load/resize icons to specified size"""
-        for name in self.app_names:
-            try:
-                img = Image.open(f"./assets/{name}.png")
-                img = img.resize((size-20, size-20), Image.LANCZOS)
-                self.icons[name.lower()] = ImageTk.PhotoImage(img)
-            except Exception:
-                print(f"Failed to load {name} icon")
-                self.icons[name.lower()] = None
-
-    def force_layout_pass(self):
-        """Force Tkinter to calculate actual window dimensions"""
-        self.update_idletasks()  # Complete all pending operations
-        self.setup_ui()  # Build UI with actual dimensions
-    
-    def setup_ui(self):
-        """Initialize or rebuild the UI elements"""
-        # Clear existing widgets
-        for widget in self.main_frame.winfo_children():
-            widget.destroy()
-        self.buttons = []
-        
-        # Calculate layout parameters
-        cols_per_row = 4  # Number of buttons per row
-        available_width = self.main_frame.winfo_width() - 40  # Account for padding
-        available_height = self.main_frame.winfo_height() - 40
-        
-        if available_width <= 0 or available_height <= 0:
-            return
-            
-        # Calculate button size based on available space
-        button_size = min(
-            available_width // cols_per_row,
-            available_height // ((len(self.app_names) + cols_per_row - 1) // cols_per_row)
+        self.scrollable_frame.bind(
+            "<Configure>",
+            lambda e: self.canvas.configure(
+                scrollregion=self.canvas.bbox("all")
+            )
         )
-        button_size = max(80, min(button_size, 150))  # Limit between 80 and 150px
-
-        self.load(button_size)
         
-        # Load/resize images
-        for name in self.app_names:
+        self.canvas.create_window((0, 0), window=self.scrollable_frame, anchor="nw")
+        self.canvas.configure(yscrollcommand=self.scrollbar.set)
+        
+        self.canvas.pack(side="left", fill="both", expand=True)
+        self.scrollbar.pack(side="right", fill="y")
+        
+        # Load icons and create buttons
+        self.load_icons()
+        self.create_buttons()
+    
+    def load_icons(self):
+        """Load all icons at fixed size"""
+        self.icons = {}
+        app_names = ["Word", "Chrome", "File", "Music", 
+                    "Settings", "Lightroom", "Logseq"]
+        icon_size = self.button_size - 20  # 20px padding
+        
+        for name in app_names:
             try:
                 img = Image.open(f"./assets/{name}.png")
-                img = img.resize((button_size-20, button_size-20), Image.LANCZOS)
+                img = img.resize((icon_size, icon_size), Image.LANCZOS)
                 self.icons[name.lower()] = ImageTk.PhotoImage(img)
             except Exception:
                 print(f"Failed to load {name} icon")
                 self.icons[name.lower()] = None
+    
+    def create_buttons(self):
+        """Create buttons with fixed square size and commands"""
+        app_data = [
+            ("word", "Word"),
+            ("chrome", "Chrome"),
+            ("music", "Music"),
+            ("file", "File"),
+            ("settings", "Settings"),
+            ("lightroom", "Lightroom"),
+            ("logseq", "Logseq")
+        ]
         
-        # Create buttons in grid
-        for index, name in enumerate(self.app_names):
-            row = index // cols_per_row
-            col = index % cols_per_row
+        for index, (command_key, display_name) in enumerate(app_data):
+            row = index // self.buttons_per_row
+            col = index % self.buttons_per_row
             
             btn = tk.Button(
-                self.main_frame,
-                image=self.icons.get(name.lower()),
-                text=name if not self.icons.get(name.lower()) else "",
+                self.scrollable_frame,
+                image=self.icons.get(command_key),
+                text=display_name if not self.icons.get(command_key) else "",
                 compound=tk.TOP,
-                command=lambda n=name.lower(): self.click(n),
-                borderwidth=2,
-                relief="raised",
-                bg='white',
-                activebackground='#e0e0e0'
+                width=self.button_size,
+                height=self.button_size,
+                borderwidth=1,
+                command=lambda key=command_key: self.command.press(key)
             )
             
-            # Make button square
-            btn.config(width=button_size, height=button_size)
             btn.grid(
-                row=row,
-                column=col,
-                padx=5,
+                row=row, 
+                column=col, 
+                padx=5, 
                 pady=5,
-                sticky="nsew"
+                sticky=""
             )
-            self.buttons.append(btn)
-        
-        # Configure grid weights
-        for r in range((len(self.app_names) + cols_per_row - 1) // cols_per_row):
-            self.main_frame.grid_rowconfigure(r, weight=1, uniform="row")
-        for c in range(cols_per_row):
-            self.main_frame.grid_columnconfigure(c, weight=1, uniform="col")
-    
-    def on_window_resize(self, event):
-        """Handle window resize events"""
-        if event.widget == self and self.winfo_width() > 50:  # Only respond to main window resize
-            self.setup_ui()
-    
-    def click(self, name):
-        try:
-            self.command.press(name)
-        except Exception:
-            messagebox.showerror("Error", f'Failed to load {name}')
+            
+            # Configure grid to center content
+            self.scrollable_frame.grid_columnconfigure(col, weight=1)
+            self.scrollable_frame.grid_rowconfigure(row, weight=1)
 
 if __name__ == "__main__":
     app = App()
