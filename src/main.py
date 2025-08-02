@@ -18,7 +18,7 @@ class App(tk.Tk): # Window configuration
 
         # Image
         self.icons = {}
-        apps = ["Word", "Chrome", "File", "Music", "Settings"]
+        apps = ["Word", "Chrome", "File", "Music", "Settings", "Lightroom", "Logseq"]
         for app in apps:
             try:
                 img = Image.open(f"./assets/{app}.png")
@@ -35,7 +35,9 @@ class App(tk.Tk): # Window configuration
             ("music", 2, lambda: self.click("qq music")),
             ("file", 3, lambda: self.click("file explorer")),
             ("settings", 4, lambda: self.click("settings")),
-            ("", 5, lambda: self.click(""))
+            ("lightroom", 5, lambda: self.click("adobe lightroom")),
+            ("logseq", 6, lambda: self.click("logseq")),
+            ("", 7, lambda: self.click(""))
         ]
         for name, col, cmd in buttons:
             icon = self.icons.get(name)
