@@ -2,12 +2,6 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from PIL import Image, ImageTk
 from control import ctrl  # Assuming this contains your application control logic
-
-import tkinter as tk
-from tkinter import ttk, messagebox
-from PIL import Image, ImageTk
-from control import ctrl
-
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -95,7 +89,7 @@ class App(tk.Tk):
                 compound=tk.TOP,
                 width=self.button_size,
                 height=self.button_size,
-                borderwidth=1,
+                borderwidth=0,
                 command=lambda key=command_key: self.command.press(key)
             )
             
