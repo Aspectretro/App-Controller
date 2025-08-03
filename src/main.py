@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk, messagebox
 from PIL import Image, ImageTk
 from control import ctrl  # Assuming this contains your application control logic
+from systemTray import TrayManage
 class App(tk.Tk):
     def __init__(self):
         super().__init__()
@@ -24,6 +25,11 @@ class App(tk.Tk):
         self.title("App Controller")
         self.geometry(f"{window_width}x{window_height}")
         self.minsize(window_width, window_height)  # Prevent making window too small
+
+        # System Tray Setup
+        self.trayManage = TrayManage(self)
+        self.create_tray()
+        self.protocol("WM_DELETE_WINDOW", self.on_close)
         
         # Main container with canvas and scrollbar
         self.canvas = tk.Canvas(self)
@@ -47,6 +53,27 @@ class App(tk.Tk):
         self.load_icons()
         self.create_buttons()
     
+    def create_tray(self):
+        settings = ttk.LabelFrame(self, text="Settings")
+        settings.pack(fill='x', padx=10, pady=10)
+
+        self.tray_var = tk.BooleanVar(value=False)
+        ttk.Checkbutton(
+            settings,
+            text="Minimise to system tray when closed",
+            variable=self.tray_var,
+            command=self.toggle_tray
+        ).pack(anchor="w")
+
+    def toggle_tray(self):
+        self.trayManage.set_tray(self.tray_var.get())
+    
+    def on_close(self):
+        if self.tray_var.get():
+            self.trayManage.min_to_tray()
+        else:
+            self.destroy()
+
     def load_icons(self):
         """Load all icons at fixed size"""
         self.icons = {}
