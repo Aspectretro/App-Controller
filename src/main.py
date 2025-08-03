@@ -24,7 +24,7 @@ class App(tk.Tk):
         rows = (num_buttons + self.buttons_per_row - 1) // self.buttons_per_row
         
         window_width = (self.button_size * self.buttons_per_row + 80)  # +20 for scrollbar space
-        window_height = (self.button_size * rows + 60)  # +60 for title bar and exit button
+        window_height = (self.button_size * self.buttons_per_row + 60)  # +60 for title bar and exit button
         
         # Window setup
         self.title("App Controller")
@@ -57,7 +57,8 @@ class App(tk.Tk):
         """Load all icons at fixed size"""
         self.icons = {}
         app_names = ["Word", "Chrome", "File", "Music", 
-                    "Settings", "Lightroom", "Logseq"]
+                    "Settings", "Lightroom", "Logseq",
+                    "Discord", "zoom"]
         icon_size = self.button_size - 20  # 20px padding
         
         for name in app_names:
@@ -78,7 +79,9 @@ class App(tk.Tk):
             ("file", "File"),
             ("settings", "Settings"),
             ("lightroom", "Lightroom"),
-            ("logseq", "Logseq")
+            ("logseq", "Logseq"),
+            ('discord', "Discord"),
+            ("zoom", "zoom")
         ]
         
         for index, (command_key, display_name) in enumerate(app_data):
