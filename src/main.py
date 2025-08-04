@@ -86,7 +86,7 @@ class App(tk.Tk):
     def load_icons(self):
         """Load all icons at fixed size"""
         self.icons = {}
-        app_names = ["Word", "Chrome", "File", "Music", 
+        app_names = ["Word", "Chrome", "File", "Spotify", 
                     "Settings", "Lightroom", "Logseq",
                     "Discord", "zoom"]
         icon_size = self.button_size - 20  # 20px padding
@@ -105,7 +105,7 @@ class App(tk.Tk):
         app_data = [
             ("word", "Word"),
             ("chrome", "Chrome"),
-            ("music", "Music"),
+            ("spotify", "Spotify"),
             ("file", "File"),
             ("settings", "Settings"),
             ("lightroom", "Lightroom"),
