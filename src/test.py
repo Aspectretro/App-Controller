@@ -1,2 +1,2 @@
 from AppOpener import open
-open("zoom")
+open("microsoft edge")

@@ -88,7 +88,7 @@ class App(tk.Tk):
         self.icons = {}
         app_names = ["Word", "Chrome", "File", "Spotify", 
                     "Settings", "Lightroom", "Logseq",
-                    "Discord", "zoom"]
+                    "Discord", "zoom", "Microsoft Edge"]
         icon_size = self.button_size - 20  # 20px padding
         
         for name in app_names:
@@ -111,7 +111,8 @@ class App(tk.Tk):
             ("lightroom", "Lightroom"),
             ("logseq", "Logseq"),
             ('discord', "Discord"),
-            ("zoom", "zoom")
+            ("zoom", "zoom"),
+            ("microsoft edge", "Microsoft Edge")
         ]
         
         for index, (command_key, display_name) in enumerate(app_data):
