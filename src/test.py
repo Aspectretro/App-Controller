@@ -1,2 +1,2 @@
 from AppOpener import open
-open("microsoft edge")
+open("powerpoint")
