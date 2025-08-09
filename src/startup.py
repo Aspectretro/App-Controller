@@ -5,7 +5,7 @@ import platform
 from pathlib import Path
 
 class Startup:
-    def __init__(self, name="Controller"):
+    def __init__(self, name):
         self.name = name
         self.platform = platform.system()
 
@@ -59,7 +59,7 @@ class Startup:
         
         try:
             with reg.OpenKey(key, key_path) as registry_key:
-                value, _ = reg.QueryValueEx(registry_key, self.app_name)
+                value, _ = reg.QueryValueEx(registry_key, self.name)
                 return value == self.get_path()
         except WindowsError:
             return False
