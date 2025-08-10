@@ -6,14 +6,15 @@ from systemTray import TrayManage
 from startup import Startup
 
 class App(tk.Tk):
-    def __init__(self):
+    def __init__(self): # TODO: window icon
         super().__init__()
         self.command = ctrl()
         
         # Fixed button and window configuration
-        self.button_size = 100  # pixels  # window padding
-        self.padding = 1
+        self.button_size = 100  # pixels 
+        self.padding = 1 # window padding
         self.buttons_per_row = 4
+        self.configure(bg="#f5f5f5") # Lightgray window background
         
         # Calculate optimal window size
         num_buttons = len(["Word", "Chrome", "File", "Music", 
@@ -40,8 +41,7 @@ class App(tk.Tk):
         # Main container with canvas and scrollbar
         self.canvas = tk.Canvas(self)
         self.scrollbar = ttk.Scrollbar(self, orient="vertical", command=self.canvas.yview)
-        self.scrollable_frame = ttk.Frame(self.canvas)
-        
+        self.scrollable_frame = ttk.Frame(self.canvas)     
         self.scrollable_frame.bind(
             "<Configure>",
             lambda e: self.canvas.configure(
@@ -83,6 +83,7 @@ class App(tk.Tk):
         menubar.add_cascade(label="Options", menu=options_menu)
         
         self.config(menu=menubar)
+        menubar.configure(bg="#e0e0e0")
         return menubar
 
 # System Tray
